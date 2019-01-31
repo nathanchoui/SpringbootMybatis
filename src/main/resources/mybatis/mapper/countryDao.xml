@@ -1,10 +1,46 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="personal.nathan.dao.CountryDao" >
+<mapper namespace="personal.nathan.dao.CountryDao">
 
-    <select id="findAll" resultType="countryDO">
-        select id, country_name countryName, country_code countryCode
+    <sql id="allColumns">
+        country_name, country_code
+    </sql>
+
+    <resultMap id="countryDOMap" type="countryDO">
+        <result column="id" property="id"></result>
+        <result column="country_name" property="countryName"></result>
+        <result column="country_code" property="countryCode"></result>
+    </resultMap>
+
+    <select id="findAll" resultType="countryDO" resultMap="countryDOMap">
+        select id,
+        <include refid="allColumns"></include>
         from country
     </select>
+
+    <update id="updateCountry" parameterType="countryDO">
+        update country
+        <set>
+            <if test="countryName != null and countryName != ''">
+                country_name = #{countryName},
+            </if>
+            <if test="countryCode != null and countryCode != ''">
+                country_code = #{countryCode},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <insert id="insertCountry" parameterType="countryDO" useGeneratedKeys="true" keyProperty="id">
+        insert country (<include refid="allColumns"></include>)
+        values (#{countryName}, #{countryCode})
+        <!--<selectKey keyColumn= "id" resultType="long" keyProperty= "id" order= "AFTER" >-->
+        <!--SELECT LAST_INSERT_ID()-->
+        <!--</selectKey>-->
+    </insert>
+
+    <delete id="deleteCountry" parameterType="long">
+        delete from country where id = #{id}
+    </delete>
 
 </mapper>

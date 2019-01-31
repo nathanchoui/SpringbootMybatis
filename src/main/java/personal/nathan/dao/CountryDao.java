@@ -12,4 +12,14 @@ import java.util.List;
 public interface CountryDao {
 
     List<CountryDO> findAll();
+
+    List<CountryDO> findCountriesByIds(List<Long> ids);
+
+    void insertCountry(CountryDO countryDO);
+
+    int updateCountry(CountryDO countryDO);
+
+    int deleteCountry(long id);
+
+
 }
