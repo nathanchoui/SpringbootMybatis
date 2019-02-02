@@ -12,10 +12,20 @@
         <result column="country_code" property="countryCode"></result>
     </resultMap>
 
-    <select id="findAll" resultType="countryDO" resultMap="countryDOMap">
+    <select id="findAll" resultMap="countryDOMap">
         select id,
         <include refid="allColumns"></include>
         from country
+    </select>
+
+    <select id="findCountriesByIds" resultMap="countryDOMap">
+        select id,
+        <include refid="allColumns"></include>
+        from country
+        where id in
+          <foreach collection="list" open="(" close=")" separator="," item="id" index="i">
+              #{id}
+          </foreach>
     </select>
 
     <update id="updateCountry" parameterType="countryDO">

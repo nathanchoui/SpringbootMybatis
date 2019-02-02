@@ -9,6 +9,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import personal.nathan.MybatisApp;
 import personal.nathan.model.dataobject.CountryDO;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Created by za-zhangwei002 on 2019/1/30.
  */
@@ -22,6 +25,12 @@ public class CountryDaoTest {
     @Test
     public void testFindAll(){
         countryDao.findAll().forEach(System.out::println);
+    }
+
+    @Test
+    public void testFindCountriesByIds() {
+        List<Long> ids = Arrays.asList(1L, 2L, 3L);
+        countryDao.findCountriesByIds(ids).forEach(System.out::println);
     }
 
     @Test
