@@ -1,7 +1,7 @@
 package personal.nathan.dao;
 
 import org.apache.ibatis.annotations.Mapper;
-import personal.nathan.model.dataobject.CountryDO;
+import personal.nathan.model.dataObject.CountryDO;
 
 import java.util.List;
 

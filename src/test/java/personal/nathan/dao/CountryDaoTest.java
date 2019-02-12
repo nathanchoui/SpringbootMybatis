@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import personal.nathan.MybatisApp;
-import personal.nathan.model.dataobject.CountryDO;
+import personal.nathan.model.dataObject.CountryDO;
 
 import java.util.Arrays;
 import java.util.List;
@@ -47,7 +47,7 @@ public class CountryDaoTest {
         CountryDO countryDO = new CountryDO();
         countryDO.setCountryCode("JP");
         countryDO.setCountryName("日本-日本");
-        countryDO.setId(11);
+        countryDO.setId(11L);
         countryDao.updateCountry(countryDO);
     }
 

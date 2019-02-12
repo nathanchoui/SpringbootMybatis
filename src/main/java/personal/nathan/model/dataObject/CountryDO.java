@@ -1,4 +1,4 @@
-package personal.nathan.model.dataobject;
+package personal.nathan.model.dataObject;
 
 import lombok.Data;
 import lombok.ToString;
@@ -8,9 +8,7 @@ import lombok.ToString;
  */
 @Data
 @ToString
-public class CountryDO {
-
-    private long id;
+public class CountryDO extends BaseDO {
 
     private String countryName;
 

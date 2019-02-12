@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="personal.nathan.dao.SysRoleMapper">
+  <resultMap id="BaseResultMap" type="personal.nathan.model.dataObject.SysRoleDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+    <result column="enabled" jdbcType="INTEGER" property="enabled" />
+    <result column="create_by" jdbcType="BIGINT" property="createBy" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sys_role
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="personal.nathan.model.dataObject.SysRoleDO">
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_role (id, role_name, enabled, 
+      create_by, create_time)
+    values (#{id,jdbcType=BIGINT}, #{roleName,jdbcType=VARCHAR}, #{enabled,jdbcType=INTEGER}, 
+      #{createBy,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="personal.nathan.model.dataObject.SysRoleDO">
+    update sys_role
+    set role_name = #{roleName,jdbcType=VARCHAR},
+      enabled = #{enabled,jdbcType=INTEGER},
+      create_by = #{createBy,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectByRoleId" parameterType="long" resultMap="RolePrivilegeMap">
+    select id, role_name, enabled, create_by, create_time
+    from sys_role r
+    inner join sys_role_previlige rp on r.id = rp.privilege_id
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <resultMap id="RolePrivilegeMap" type="personal.nathan.model.dataObject.SysRoleDO" extends="BaseResultMap">
+    <collection property="privilegeList"
+                ofType="personal.nathan.model.dataObject.SysRolePrivilegeDO"
+                select="">
+
+    </collection>
+  </resultMap>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, role_name, enabled, create_by, create_time
+    from sys_role
+  </select>
+</mapper>

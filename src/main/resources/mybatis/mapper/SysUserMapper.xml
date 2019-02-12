@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="personal.nathan.dao.SysUserMapper">
+    <resultMap id="BaseResultMap" type="personal.nathan.model.dataObject.SysUserDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="user_password" jdbcType="VARCHAR" property="userPassword"/>
+        <result column="user_email" jdbcType="VARCHAR" property="userEmail"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="user_info" jdbcType="LONGVARCHAR" property="userInfo"/>
+        <result column="head_img" jdbcType="LONGVARBINARY" property="headImg"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sys_user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="personal.nathan.model.dataObject.SysUserDO">
+        <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into sys_user (id, user_name, user_password,
+        user_email, create_time, user_info,
+        head_img)
+        values (#{id,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}, #{userPassword,jdbcType=VARCHAR},
+        #{userEmail,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{userInfo,jdbcType=LONGVARCHAR},
+        #{headImg,jdbcType=LONGVARBINARY})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="personal.nathan.model.dataObject.SysUserDO">
+    update sys_user
+    set user_name = #{userName,jdbcType=VARCHAR},
+      user_password = #{userPassword,jdbcType=VARCHAR},
+      user_email = #{userEmail,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      user_info = #{userInfo,jdbcType=LONGVARCHAR},
+      head_img = #{headImg,jdbcType=LONGVARBINARY}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, user_name, user_password, user_email, create_time, user_info, head_img
+    from sys_user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+    select id, user_name, user_password, user_email, create_time, user_info, head_img
+    from sys_user
+  </select>
+
+    <select id="findSysUserDOById" parameterType="long" resultType="personal.nathan.model.dataObject.SysUserDO">
+    select u.id, u.user_name userName, u.user_password userPassword, u.user_email userEmail
+      , u.create_time createTime, u.user_info userInfo, u.head_img headImg, r.id "role.id"
+      , r.role_name "role.roleName", r.enabled "role.enabled", r.create_by "role.createBy"
+    from sys_user u
+    inner join sys_user_role ur on u.id = ur.user_id
+    inner join sys_role r on r.id = ur.role_id
+    where u.id = #{id}
+  </select>
+
+    <select id="findSysUserDOById2" parameterType="long" resultMap="UserRoleMap">
+    select u.id, u.user_name, u.user_password, u.user_email
+      , u.create_time, u.user_info, u.head_img, r.id role_id
+      , r.role_name role_role_name, r.enabled role_role_name, r.create_by role_create_by
+    from sys_user u
+    inner join sys_user_role ur on u.id = ur.user_id
+    inner join sys_role r on r.id = ur.role_id
+    where u.id = #{id}
+  </select>
+
+    <resultMap id="UserRoleMap"
+               type="personal.nathan.model.dataObject.SysUserDO"
+               extends="BaseResultMap">
+        <association property="role" columnPrefix="role_" resultMap="personal.nathan.dao.SysRoleMapper.BaseResultMap"/>
+    </resultMap>
+
+    <select id="findSysUserDOById3" parameterType="long" resultMap="UserRoleSelectMap">
+    select u.id, u.user_name, u.user_password, u.user_email
+      , u.create_time, u.user_info, u.head_img, ur.role_id
+    from sys_user u
+    inner join sys_user_role ur on u.id = ur.user_id
+    where u.id = #{id}
+  </select>
+
+    <resultMap id="UserRoleSelectMap"
+               type="personal.nathan.model.dataObject.SysUserDO"
+               extends="BaseResultMap">
+        <association property="role" column="role_id"
+                     select="personal.nathan.dao.SysRoleMapper.selectByRoleId"/>
+    </resultMap>
+
+    <select id="findUserDOWithRoleList" parameterType="long" resultMap="UserRoleListMap">
+    select u.id, u.user_name, u.user_password, u.user_email
+      , u.create_time, u.user_info, u.head_img, ur.role_id role_id
+    from sys_user u
+    inner join sys_user_role ur on u.id = ur.user_id
+    where u.id = #{id}
+  </select>
+
+    <resultMap id="UserRoleListMap"
+               type="personal.nathan.model.dataObject.SysUserDO"
+               extends="BaseResultMap">
+        <collection property="roleList" columnPrefix="role_"
+                    resultMap="personal.nathan.dao.SysRoleMapper.BaseResultMap"/>
+    </resultMap>
+
+    <select id="findUserDOWithRoleList2" parameterType="long" resultMap="UserRoleListMap2">
+    select u.id, u.user_name, u.user_password, u.user_email
+      , u.create_time, u.user_info, u.head_img, ur.role_id
+    from sys_user u
+    inner join sys_user_role ur on u.id = ur.user_id
+    where u.id = #{id}
+  </select>
+
+    <resultMap id="UserRoleListMap2"
+               type="personal.nathan.model.dataObject.SysUserDO"
+               extends="BaseResultMap">
+        <collection property="roleList"
+                    column="role_id"
+                    javaType="java.util.ArrayList"
+                    ofType="personal.nathan.model.dataObject.SysRoleDO"
+                    select="personal.nathan.dao.SysRoleMapper.selectByRoleId"/>
+    </resultMap>
+
+</mapper>
