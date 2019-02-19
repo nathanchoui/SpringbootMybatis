@@ -30,20 +30,20 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
 
-  <select id="selectByRoleId" parameterType="long" resultMap="RolePrivilegeMap">
-    select id, role_name, enabled, create_by, create_time
-    from sys_role r
-    inner join sys_role_previlige rp on r.id = rp.privilege_id
-    where id = #{id,jdbcType=BIGINT}
-  </select>
+  <!--<select id="selectByRoleId" parameterType="long" resultMap="RolePrivilegeMap">-->
+    <!--select id, role_name, enabled, create_by, create_time-->
+    <!--from sys_role r-->
+    <!--inner join sys_role_previlige rp on r.id = rp.privilege_id-->
+    <!--where id = #{id,jdbcType=BIGINT}-->
+  <!--</select>-->
 
-  <resultMap id="RolePrivilegeMap" type="personal.nathan.model.dataObject.SysRoleDO" extends="BaseResultMap">
-    <collection property="privilegeList"
-                ofType="personal.nathan.model.dataObject.SysRolePrivilegeDO"
-                select="">
+  <!--<resultMap id="RolePrivilegeMap" type="personal.nathan.model.dataObject.SysRoleDO" extends="BaseResultMap">-->
+    <!--<collection property="privilegeList"-->
+                <!--ofType="personal.nathan.model.dataObject.SysRolePrivilegeDO"-->
+                <!--select="">-->
 
-    </collection>
-  </resultMap>
+    <!--</collection>-->
+  <!--</resultMap>-->
 
   <select id="selectAll" resultMap="BaseResultMap">
     select id, role_name, enabled, create_by, create_time

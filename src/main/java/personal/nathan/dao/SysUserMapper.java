@@ -1,11 +1,19 @@
 package personal.nathan.dao;
 
+import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.cache.decorators.FifoCache;
 import personal.nathan.model.dataObject.SysUserDO;
 
 import java.util.List;
 
 @Mapper
+@CacheNamespace(
+        eviction = FifoCache.class,
+        flushInterval = 60000,
+        size = 1024,
+        readWrite = true
+)
 public interface SysUserMapper {
     int deleteByPrimaryKey(Long id);
 

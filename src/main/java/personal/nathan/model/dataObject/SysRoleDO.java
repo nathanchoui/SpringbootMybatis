@@ -27,9 +27,9 @@ public class SysRoleDO extends BaseDO {
      */
     private Long createBy;
 
-    /**
-     * 权限列表
-     */
-    private List<SysPrivilegeDO> privilegeList;
+//    /**
+//     * 权限列表
+//     */
+//    private List<SysPrivilegeDO> privilegeList;
 
 }
